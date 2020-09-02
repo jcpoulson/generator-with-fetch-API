@@ -1,5 +1,4 @@
 // Variables
-//const card = document.querySelectorAll('.card');
 const modalSection = document.querySelector('.modal-test');
 const cardInfo = document.querySelector('.info');
 const img = document.querySelector('.img');
