@@ -6,6 +6,7 @@ const img = document.querySelector('.img');
 const container = document.querySelector('.container');
 const urlAPI = `https://randomuser.me/api/?results=12&inc=name, picture,
 email, location, phone, dob &noinfo &nat=US`;
+const employees = [];
 
 //Fetch Request
 fetch(urlAPI)
@@ -17,22 +18,22 @@ fetch(urlAPI)
         let dude = ({name: person.name, email: person.email, city: person.location.city, img: person.picture.large, phone: person.phone, dob: person.dob.date, address: person.address})
         return dude;
     }))
-     .then(dude => dude.forEach((person, index) => {
-         generateHTML(person, index);
-     }))
+     .then(generateHTML)
     
     
     
 
 //Functions
 function generateHTML(person, index) {
-    //Generates the user cards
-    let div = document.createElement('div');
+    let employees = person;
+    
+    employees.forEach( (employee, index) => {
+        let div = document.createElement('div');
     container.appendChild(div);
-    let name = person.name;
-    let email = person.email;
-    let city = person.city;
-    let pic = person.img;
+    let name = employee.name;
+    let email = employee.email;
+    let city = employee.city;
+    let pic = employee.img;
     
     let html = 
 `<div class="card" data-index="${index}" id="card">
@@ -46,31 +47,36 @@ function generateHTML(person, index) {
         </div>
     </div>`
     div.innerHTML = html;
+    })
+}
 
-
-    //Generates the user modals
+function displayModal(index) {
+    let { name, dob, phone, email, location: { city, street, state, postcode
+    }, picture } = employees[index];
+    
+    
     let modalHTML = 
     `<div class="overlay hidden">
         <div class="modal">
         <button class="modal-close">X</button>
                 <div class="modal-content">
-                <img class="avatar" src="${person.img}" />
+                <img class="avatar" src="${picture}" />
                 <div class="text-container">
-                <h2 class="name">${person.name}</h2>
-                <p class="email">${person.email}</p>
-                <p class="address">${person.city}</p>
+                <h2 class="name">${name}</h2>
+                <p class="email">${email}</p>
+                <p class="address">${city}</p>
                 <hr />
-                <p>${person.phone}</p>
-                <p class="address">${person.address}</p>
-                <p>Birthday: ${person.dob}</p>
+                <p>${phone}</p>
+                <p class="address">${street}, ${state} ${postcode}</p>
+                <p>Birthday: ${dob}</p>
                 </div>
             </div>
         </div>
     </div>`
-    let modal = document.createElement('div');
-    modal.innerHTML = modalHTML;
-    modalSection.appendChild(modal);
+    overlay.classList.remove('hidden');
+    modalSection.innerHTML = modalHTML;
 }
+
 
 
 
@@ -80,8 +86,8 @@ container.addEventListener('click', function(e) {
     if (e.target !== container) {
         const card = e.target.closest('.card');
         const index = card.getAttribute('data-index');
-        console.log(index);
+        displayModal(index);
     }
 })
 
-
+console.log(employees);
