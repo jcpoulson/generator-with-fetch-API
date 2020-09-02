@@ -9,6 +9,11 @@ email, location, phone, dob &noinfo &nat=US`;
 const employees = [];
 
 //Fetch Request
+/* The fetch request first parses the json data
+    Then it returns data in an array
+    then it maps through the array and stores all the data properties in an object called dude
+    finally it generates html through the generateHTML function for each object in the array
+*/
 fetch(urlAPI)
     .then(response => response.json())
     .then(data => data.results)
@@ -24,6 +29,11 @@ fetch(urlAPI)
     
 
 //Functions
+
+/* 
+    This function stores the object properties in variables and then generates HTML
+    through string interpolation, then adds it to the DOM
+*/
 function generateHTML(person, index) {
     let employees = person;
     
@@ -65,6 +75,11 @@ function generateHTML(person, index) {
 
 // Modal Interaction
 
+/* 
+    This function grabs all the data from the card being clicked and then uses that data to generate HTML and display it
+    on the page
+*/
+
 container.addEventListener('click', function(e) {
     if (e.target !== container) {
         const card = e.target.closest('.card');
@@ -103,6 +118,9 @@ container.addEventListener('click', function(e) {
     }
 })
 
+/* 
+    This function targets the close button and gets rid of the HTML
+*/
 modalSection.addEventListener('click', function(e) {
     if (e.target.id === 'close') {
         modalSection.innerHTML = '';
