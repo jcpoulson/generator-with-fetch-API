@@ -13,6 +13,10 @@
     background-color: white;
 }
 
+.card:hover {
+    cursor: pointer;
+}
+
 
  img {
     border-radius: 50%;

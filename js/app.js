@@ -34,6 +34,11 @@ function generateHTML(person, index) {
     let email = employee.email;
     let city = employee.city;
     let pic = employee.img;
+    let phone = employee.phone;
+    let address = employee.address;
+    let dob = employee.dob;
+
+    let date = new Date(dob);
     
     let html = 
 `<div class="card" data-index="${index}" id="card">
@@ -42,40 +47,18 @@ function generateHTML(person, index) {
         </div>
         <div class="info">
             <h1>${name}</h1>
-            <p>${email}</p>
-            <p>${city}</p>
+            <p class="email">${email}</p>
+            <p class="city">${city}</p>
+            <p class="phone" style="display: none;">${phone}</p>
+            <p class="address" style="display: none;">${address}</p>
+            <p class="dob" style="display: none;">${date}</p>
         </div>
     </div>`
     div.innerHTML = html;
     })
 }
 
-function displayModal(index) {
-    let { name, dob, phone, email, location: { city, street, state, postcode
-    }, picture } = employees[index];
-    
-    
-    let modalHTML = 
-    `<div class="overlay hidden">
-        <div class="modal">
-        <button class="modal-close">X</button>
-                <div class="modal-content">
-                <img class="avatar" src="${picture}" />
-                <div class="text-container">
-                <h2 class="name">${name}</h2>
-                <p class="email">${email}</p>
-                <p class="address">${city}</p>
-                <hr />
-                <p>${phone}</p>
-                <p class="address">${street}, ${state} ${postcode}</p>
-                <p>Birthday: ${dob}</p>
-                </div>
-            </div>
-        </div>
-    </div>`
-    overlay.classList.remove('hidden');
-    modalSection.innerHTML = modalHTML;
-}
+
 
 
 
@@ -86,8 +69,43 @@ container.addEventListener('click', function(e) {
     if (e.target !== container) {
         const card = e.target.closest('.card');
         const index = card.getAttribute('data-index');
-        displayModal(index);
+
+        function displayModal(index) {
+            let name = card.querySelector('.info').querySelector('h1').textContent;
+            let picture = card.querySelector('.img').querySelector('img').src;
+            let email = card.querySelector('.info').querySelector('.email').textContent;
+            let city = card.querySelector('.info').querySelector('.city').textContent;
+            let phone = card.querySelector('.info').querySelector('.phone').textContent;
+            let address = card.querySelector('.info').querySelector('.address').textContent;
+            let dob = card.querySelector('.info').querySelector('.dob').textContent
+
+            let modalHTML = 
+            `<div class="overlay">
+                <div class="modal">
+                <button class="modal-close" id="close">X</button>
+                        <div class="modal-content">
+                        <img class="avatar" src="${picture}" />
+                        <div class="text-container">
+                        <h2 class="name">${name}</h2>
+                        <p class="email">${email}</p>
+                        <p class="address">${city}</p>
+                        <hr />
+                        <p>${phone}</p>
+                        <p class="address">${address}</p>
+                        <p>Birthday: ${dob}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>`
+            modalSection.innerHTML = modalHTML;
+        }
+        displayModal(card);
     }
 })
 
-console.log(employees);
+modalSection.addEventListener('click', function(e) {
+    if (e.target.id === 'close') {
+        modalSection.innerHTML = '';
+    }
+})
+
