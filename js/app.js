@@ -1,5 +1,5 @@
 // Variables
-const card = document.querySelectorAll('.card');
+//const card = document.querySelectorAll('.card');
 const modalSection = document.querySelector('.modal-test');
 const cardInfo = document.querySelector('.info');
 const img = document.querySelector('.img');
@@ -17,13 +17,15 @@ fetch(urlAPI)
         let dude = ({name: person.name, email: person.email, city: person.location.city, img: person.picture.large, phone: person.phone, dob: person.dob.date, address: person.address})
         return dude;
     }))
-     .then(dude => dude.forEach(generateHTML))
+     .then(dude => dude.forEach((person, index) => {
+         generateHTML(person, index);
+     }))
     
     
     
 
 //Functions
-function generateHTML(person) {
+function generateHTML(person, index) {
     //Generates the user cards
     let div = document.createElement('div');
     container.appendChild(div);
@@ -33,7 +35,7 @@ function generateHTML(person) {
     let pic = person.img;
     
     let html = 
-`<div class="card"/>
+`<div class="card" data-index="${index}" id="card">
         <div class="img">
             <img src="${pic}">
         </div>
@@ -70,8 +72,16 @@ function generateHTML(person) {
     modalSection.appendChild(modal);
 }
 
+
+
 // Modal Interaction
 
-
+container.addEventListener('click', function(e) {
+    if (e.target !== container) {
+        const card = e.target.closest('.card');
+        const index = card.getAttribute('data-index');
+        console.log(index);
+    }
+})
 
 
